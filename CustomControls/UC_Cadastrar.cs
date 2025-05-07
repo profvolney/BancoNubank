@@ -16,6 +16,10 @@ namespace BancoNubank.CustomControls
     public partial class UC_Cadastrar: UserControl
     {
         private static string _DBConection;
+
+        public UC_Cadastrar()
+        {            
+        }
         public UC_Cadastrar(string v, DBConection dBConection)
         {
             InitializeComponent();

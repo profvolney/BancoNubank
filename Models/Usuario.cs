@@ -1,15 +1,23 @@
-﻿using BancoNubank.Interfaces;
+﻿using BancoNubank.DAL;
+using BancoNubank.Interfaces;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace BancoNubank.Models
 {
     public class Usuario : IUsuarioService
-    {
+    {       
+        private double _saldo;
+
+        #region Propriedades
         [Key]
         public int Id { get; set; }
         [Required]
@@ -28,30 +36,124 @@ namespace BancoNubank.Models
         public string Endereco { get; set; }
         [StringLength(255)]
         public DateTime DataNascimento { get; set; }
+        #endregion
+        #region Construtores
+        public Usuario()
+        {            
+        }
+        
+        public Usuario(double saldo)
+        {           
+            _saldo = saldo;
+        }
+        #endregion
 
-        public void CriarConta(string nome, string senha, string email, string telefone, string endereco, DateTime dataNascimento)
+        public double ContaBancaria
         {
-            throw new NotImplementedException();
+            get { return _saldo; }            
         }
 
+
+        public void CriarConta(string nome, string senha, string email, string telefone, 
+            string endereco, DateTime dataNasc)
+        {
+            string sql = "Insert Into usuarios (nome, senha, email, telefone, endereco, dataNasc) " +
+                "Values (@nome, @senha, @email, @telefone, @endereco, @dataNasc);";
+            try
+            {
+                string Con = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
+                var connection = new MySqlConnection(Con);
+                connection.Open();
+                MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);
+                cmdUsuario.Parameters.AddWithValue("@nome", nome);
+                cmdUsuario.Parameters.AddWithValue("@senha", senha);
+                cmdUsuario.Parameters.AddWithValue("@email", email);
+                cmdUsuario.Parameters.AddWithValue("@telefone", telefone);
+                cmdUsuario.Parameters.AddWithValue("@endereco", endereco);
+                cmdUsuario.Parameters.AddWithValue("@dataNasc", dataNasc);
+
+                cmdUsuario.ExecuteNonQuery();
+
+            }
+            catch
+            {
+                throw new Exception("Erro ao conectar ao banco de dados.");
+            }
+        }
         public void DeletarConta(int id)
         {
-            throw new NotImplementedException();
-        }
+            string sql = "DELETE FROM usuarios WHERE id=@id;";
 
-        public void Depositar(int id, decimal valor)
-        {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                string Con = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
+                var connection = new MySqlConnection(Con);
+                connection.Open();
+                MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);
 
-        public void EditarConta(int id, string nome, string senha, string email, string telefone, string endereco, DateTime dataNascimento)
-        {
-            throw new NotImplementedException();
-        }
+                cmdUsuario.Parameters.AddWithValue("@id", id);
 
-        public void Sacar(int id, decimal valor)
+                cmdUsuario.ExecuteNonQuery();
+
+            }
+            catch
+            {
+                throw new Exception("Erro ao conectar ao banco de dados.");
+            }
+        }
+        public void Depositar(double valor)
         {
-            throw new NotImplementedException();
+           if(valor < 0)
+            {
+                throw new ArgumentOutOfRangeException("Valor de depósito inválido.");
+            }
+            _saldo += valor;
+        }
+        public void EditarConta(int id, string nome, string senha, string email, 
+            string telefone, string endereco, DateTime dataNasc)
+        {
+            string sql = "Update usuarios SET nome=@nome, senha=@senha, email=@email, " +
+                "telefone=@telefone, endereco=@endereco, dataNasc=@dataNasc WHERE id=@id;";
+
+            try
+            {
+                string Con = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
+                var connection = new MySqlConnection(Con);
+                connection.Open();
+                MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);
+
+                cmdUsuario.Parameters.AddWithValue("@id", id);
+                cmdUsuario.Parameters.AddWithValue("@nome", nome);
+                cmdUsuario.Parameters.AddWithValue("@senha", senha);
+                cmdUsuario.Parameters.AddWithValue("@email", email);
+                cmdUsuario.Parameters.AddWithValue("@telefone", telefone);
+                cmdUsuario.Parameters.AddWithValue("@endereco", endereco);
+                cmdUsuario.Parameters.AddWithValue("@dataNasc", dataNasc);
+
+                cmdUsuario.ExecuteNonQuery();
+
+            }
+            catch
+            {
+                throw new Exception("Erro ao conectar ao banco de dados.");                
+            }
+        }
+        public void Sacar(double valor)
+        {
+            if (valor > _saldo)
+            {
+                throw new ArgumentOutOfRangeException("Valor de saque inválido.");
+            }
+            else
+            {
+                _saldo -= valor;
+            }
+        }
+        public void Transferir(double valor, int idDestino, ContaBancaria outraConta)
+        {
+            Sacar(valor);
+            outraConta.Depositar(valor);
+
         }
     }
 }

@@ -15,7 +15,7 @@ namespace BancoNubank.DAL
         public DBConection()
         {
             MySqlConnection conn = new MySqlConnection(Con);
-            conn.Open();
+            
             MessageBox.Show("Conexão com o banco de dados estabelecida com sucesso.");
         }    
 

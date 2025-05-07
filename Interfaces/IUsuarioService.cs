@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BancoNubank.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace BancoNubank.Interfaces
         void CriarConta(string nome, string senha, string email, string telefone, string endereco, DateTime dataNascimento);
         void EditarConta(int id, string nome, string senha, string email, string telefone, string endereco, DateTime dataNascimento);
         void DeletarConta(int id);
-        void Sacar(int id, decimal valor);
-        void Depositar(int id, decimal valor);
+        void Sacar(double valor);
+        void Depositar(double valor);
+        void Transferir(double valor, int idDestino, ContaBancaria outraConta);
     }
 }
