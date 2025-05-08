@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace BancoNubank.Models
@@ -16,6 +17,7 @@ namespace BancoNubank.Models
     public class Usuario : IUsuarioService
     {       
         private double _saldo;
+        private DBConection _dbConection;
 
         #region Propriedades
         [Key]
@@ -53,27 +55,30 @@ namespace BancoNubank.Models
             get { return _saldo; }            
         }
 
-
+        private static ContaBancaria contaBancaria;
         public void CriarConta(string nome, string senha, string email, string telefone, 
-            string endereco, DateTime dataNasc)
-        {
-            string sql = "Insert Into usuarios (nome, senha, email, telefone, endereco, dataNasc) " +
-                "Values (@nome, @senha, @email, @telefone, @endereco, @dataNasc);";
+            string endereco, DateTime dataNasc, string conta_id )
+        {           
+            string sql = "INSERT INTO usuarios (nome, senha, email, telefone, endereco, dataNasc, conta_id) " +
+                "Values (@nome, SHA2(@senha, 256), @email, @telefone, @endereco, @dataNasc, @conta_id);";
             try
             {
                 string Con = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
                 var connection = new MySqlConnection(Con);
                 connection.Open();
-                MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);
+                MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);               
+
                 cmdUsuario.Parameters.AddWithValue("@nome", nome);
                 cmdUsuario.Parameters.AddWithValue("@senha", senha);
                 cmdUsuario.Parameters.AddWithValue("@email", email);
                 cmdUsuario.Parameters.AddWithValue("@telefone", telefone);
                 cmdUsuario.Parameters.AddWithValue("@endereco", endereco);
-                cmdUsuario.Parameters.AddWithValue("@dataNasc", dataNasc);
+                cmdUsuario.Parameters.AddWithValue("@dataNasc", dataNasc);     
+                cmdUsuario.Parameters.AddWithValue("@conta_id", conta_id);     
 
                 cmdUsuario.ExecuteNonQuery();
-
+                cmdUsuario.ExecuteScalar();
+                MessageBox.Show("Conta criada com sucesso! ");
             }
             catch
             {
@@ -108,6 +113,30 @@ namespace BancoNubank.Models
                 throw new ArgumentOutOfRangeException("Valor de depósito inválido.");
             }
             _saldo += valor;
+
+            //string sql = "Update usuarios SET Saldo=@saldo WHERE id=@id";
+            //try
+            //{
+            //    //double saldo = Double.Parse(contaBancaria.Saldo.ToString("F2"));         
+            
+            //    string Con = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
+            //    var connection = new MySqlConnection(Con);
+            //    connection.Open();
+            //    MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);
+
+            //    var id = cmdUsuario.ExecuteScalar(); 
+
+            //    cmdUsuario.Parameters.AddWithValue("@id", id);                      
+            //    cmdUsuario.Parameters.AddWithValue("@saldo", _saldo);
+
+            //    cmdUsuario.ExecuteNonQuery();
+            //    MessageBox.Show("Depósito realizado com sucesso! ");
+            //}
+            //catch
+            //{
+            //    throw new Exception("Erro ao conectar ao banco de dados.");
+            //}
+
         }
         public void EditarConta(int id, string nome, string senha, string email, 
             string telefone, string endereco, DateTime dataNasc)
@@ -128,9 +157,10 @@ namespace BancoNubank.Models
                 cmdUsuario.Parameters.AddWithValue("@email", email);
                 cmdUsuario.Parameters.AddWithValue("@telefone", telefone);
                 cmdUsuario.Parameters.AddWithValue("@endereco", endereco);
-                cmdUsuario.Parameters.AddWithValue("@dataNasc", dataNasc);
+                cmdUsuario.Parameters.AddWithValue("@dataNasc", dataNasc);            
 
                 cmdUsuario.ExecuteNonQuery();
+                MessageBox.Show("Conta editada com sucesso! ");
 
             }
             catch
@@ -155,5 +185,6 @@ namespace BancoNubank.Models
             outraConta.Depositar(valor);
 
         }
+
     }
 }

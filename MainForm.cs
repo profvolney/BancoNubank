@@ -18,8 +18,7 @@ namespace BancoNubank
     public partial class MainForm : Form
     {
         public static Panel MainPanel;
-        private string _dbConnection; // Add a field to store the database connection string  
-        private static string _DBConection;
+        private string _dbConnection; 
         public MainForm()
         {
             InitializeComponent();
@@ -27,7 +26,7 @@ namespace BancoNubank
         public MainForm(DBConection dBConection)
         {           
             MainPanel = panel2;
-            _dbConnection = dBConection.ToString();  // Initialize the database connection string  
+            _dbConnection = dBConection.ToString();    
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -53,10 +52,28 @@ namespace BancoNubank
         {         
             UC_Cadastrar cadastrar = new UC_Cadastrar();
             cadastrar.Dock = DockStyle.Fill;
-            this.Controls.Add(cadastrar);
-            cadastrar.Visible = false;
+            panel2.Controls.Add(cadastrar);
             cadastrar.BringToFront();
+            cadastrar.Visible = true;
             cadastrar.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            UC_Login login = new UC_Login();
+            login.Dock = DockStyle.Fill;
+            panel2.Controls.Add(login);
+            panel2.BringToFront();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            UC_Depositar depositar = new UC_Depositar();
+            depositar.Dock = DockStyle.Fill;
+            panel2.Controls.Add(depositar);
+            depositar.BringToFront();
+            depositar.Visible = true;
+            depositar.Show();
         }
     }
 }
