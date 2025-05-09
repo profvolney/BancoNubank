@@ -20,6 +20,7 @@ namespace BancoNubank.Models
                 throw new ArgumentOutOfRangeException("Valor de depósito inválido.");
             }
             _saldo += valor;
+            
         }
 
        

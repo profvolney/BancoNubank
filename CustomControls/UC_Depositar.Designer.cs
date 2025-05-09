@@ -28,84 +28,91 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtSaldo = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblSaldoAtual = new System.Windows.Forms.Label();
-            this.btnDepositar = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            txtSaldo = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            lblSaldoAtual = new System.Windows.Forms.Label();
+            btnDepositar = new System.Windows.Forms.Button();
+            label3 = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // txtSaldo
             // 
-            this.txtSaldo.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSaldo.Location = new System.Drawing.Point(287, 199);
-            this.txtSaldo.Name = "txtSaldo";
-            this.txtSaldo.Size = new System.Drawing.Size(218, 38);
-            this.txtSaldo.TabIndex = 0;
+            txtSaldo.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            txtSaldo.Location = new System.Drawing.Point(335, 230);
+            txtSaldo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtSaldo.Name = "txtSaldo";
+            txtSaldo.Size = new System.Drawing.Size(254, 38);
+            txtSaldo.TabIndex = 0;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(284, 183);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Valor a Depositar";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(331, 211);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(95, 15);
+            label1.TabIndex = 1;
+            label1.Text = "Valor a Depositar";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(284, 264);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Saldo em Conta";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(331, 305);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(91, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Saldo em Conta";
             // 
             // lblSaldoAtual
             // 
-            this.lblSaldoAtual.AutoSize = true;
-            this.lblSaldoAtual.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSaldoAtual.Location = new System.Drawing.Point(283, 319);
-            this.lblSaldoAtual.Name = "lblSaldoAtual";
-            this.lblSaldoAtual.Size = new System.Drawing.Size(0, 42);
-            this.lblSaldoAtual.TabIndex = 4;
+            lblSaldoAtual.AutoSize = true;
+            lblSaldoAtual.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            lblSaldoAtual.Location = new System.Drawing.Point(330, 368);
+            lblSaldoAtual.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblSaldoAtual.Name = "lblSaldoAtual";
+            lblSaldoAtual.Size = new System.Drawing.Size(0, 42);
+            lblSaldoAtual.TabIndex = 4;
             // 
             // btnDepositar
             // 
-            this.btnDepositar.Location = new System.Drawing.Point(511, 199);
-            this.btnDepositar.Name = "btnDepositar";
-            this.btnDepositar.Size = new System.Drawing.Size(81, 38);
-            this.btnDepositar.TabIndex = 5;
-            this.btnDepositar.Text = "Depositar";
-            this.btnDepositar.UseVisualStyleBackColor = true;
-            this.btnDepositar.Click += new System.EventHandler(this.btnDepositar_Click);
+            btnDepositar.Location = new System.Drawing.Point(597, 230);
+            btnDepositar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnDepositar.Name = "btnDepositar";
+            btnDepositar.Size = new System.Drawing.Size(94, 38);
+            btnDepositar.TabIndex = 5;
+            btnDepositar.Text = "Depositar";
+            btnDepositar.UseVisualStyleBackColor = true;
+            btnDepositar.Click += btnDepositar_Click;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(40, 36);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(253, 31);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Depósito em  Conta";
+            label3.AutoSize = true;
+            label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label3.Location = new System.Drawing.Point(47, 42);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(253, 31);
+            label3.TabIndex = 6;
+            label3.Text = "Depósito em  Conta";
             // 
             // UC_Depositar
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.btnDepositar);
-            this.Controls.Add(this.lblSaldoAtual);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtSaldo);
-            this.Name = "UC_Depositar";
-            this.Size = new System.Drawing.Size(899, 592);
-            this.Load += new System.EventHandler(this.Depositar_Load);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(label3);
+            Controls.Add(btnDepositar);
+            Controls.Add(lblSaldoAtual);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(txtSaldo);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "UC_Depositar";
+            Size = new System.Drawing.Size(1049, 683);
+            Load += Depositar_Load;
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

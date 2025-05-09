@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BancoNubank.Models;
+using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace BancoNubank.CustomControls
 {
@@ -28,6 +30,36 @@ namespace BancoNubank.CustomControls
             double valorDeposito = Double.Parse(txtSaldo.Text);
             Usuario usuario = new Usuario();
             usuario.Depositar(valorDeposito);
+
+            MessageBox.Show("Depósito realizado com sucesso!");
+
+            string conString = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
+            MySqlConnection connection = new MySqlConnection(conString);
+            string sql = "SELECT saldo FROM Conta;";
+            MySqlCommand cmdDepositar = new MySqlCommand(sql, connection);
+
+            try
+            {
+                connection.Open();
+                MySqlDataReader reader = cmdDepositar.ExecuteReader();
+                if (reader.Read())
+                {
+                    double saldoAtual = reader.GetDouble("saldo");
+                    
+                    MessageBox.Show($"Seu saldo atual é: {saldoAtual}");
+
+                    lblSaldoAtual.Text = saldoAtual.ToString("F2");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao conectar ao banco de dados: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
         }
     }
 }

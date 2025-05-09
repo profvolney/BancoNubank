@@ -112,30 +112,49 @@ namespace BancoNubank.Models
             {
                 throw new ArgumentOutOfRangeException("Valor de depósito inválido.");
             }
-            _saldo += valor;
+            _saldo += valor;                      
 
-            //string sql = "Update usuarios SET Saldo=@saldo WHERE id=@id";
-            //try
-            //{
-            //    //double saldo = Double.Parse(contaBancaria.Saldo.ToString("F2"));         
-            
-            //    string Con = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
-            //    var connection = new MySqlConnection(Con);
-            //    connection.Open();
-            //    MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);
+            string sql = "UPDATE Conta c " +
+                "JOIN (SELECT id, SUM(Total) AS Total " +
+                "FROM Depositos " +
+                "GROUP BY id ) d " +
+                "ON c.id = d.id " +
+                "SET c.saldo = c.saldo + d.Total;";
+            try
+            {
+                //double saldo = Double.Parse(contaBancaria.Saldo.ToString("F2"));
 
-            //    var id = cmdUsuario.ExecuteScalar(); 
+                var saldoAtual = valor += _saldo;
 
-            //    cmdUsuario.Parameters.AddWithValue("@id", id);                      
-            //    cmdUsuario.Parameters.AddWithValue("@saldo", _saldo);
+                string Con = ConfigurationManager.ConnectionStrings["DBConexao"].ConnectionString;
+                var connection = new MySqlConnection(Con);
+                connection.Open();
+                MySqlCommand cmdUsuario = new MySqlCommand(sql, connection);
 
-            //    cmdUsuario.ExecuteNonQuery();
-            //    MessageBox.Show("Depósito realizado com sucesso! ");
-            //}
-            //catch
-            //{
-            //    throw new Exception("Erro ao conectar ao banco de dados.");
-            //}
+                MySqlDataReader reader = cmdUsuario.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    //var saldo = reader["saldo"].ToString();
+                    var id = cmdUsuario.ExecuteScalar();
+
+                    cmdUsuario.Parameters.AddWithValue("@id", id);
+                    cmdUsuario.Parameters.AddWithValue("@saldo", saldoAtual);                
+                    
+                    cmdUsuario.ExecuteNonQuery();
+                    MessageBox.Show("Depósito realizado com sucesso! ");
+                }
+                else
+                {
+                    reader.Close();
+                    MessageBox.Show("Erro ao realizar o depósito.");
+                }
+
+            }
+            catch
+            {
+                throw new Exception("Erro ao conectar ao banco de dados.");
+            }
 
         }
         public void EditarConta(int id, string nome, string senha, string email, 
@@ -170,7 +189,7 @@ namespace BancoNubank.Models
         }
         public void Sacar(double valor)
         {
-            if (valor > _saldo)
+            if (valor < _saldo)
             {
                 throw new ArgumentOutOfRangeException("Valor de saque inválido.");
             }
